@@ -1,14 +1,10 @@
 <?php
 
-// Datos para conectar con PostgreSQL
-
 $servidor = "localhost";
 $puerto = "5432";
-$base_datos = "cine_colombia";
-$usuario = "postgres";
-$contrasena = "TU_CONTRASEÑA";
-
-// Intentamos realizar la conexión
+$base_datos = "NOMBRE_DE_LA_BASE";
+$usuario = "cine_app";
+$contrasena = "TU_CONTRASENA";
 
 try {
 
@@ -18,11 +14,13 @@ try {
         $contrasena
     );
 
-    echo "¡Conexión exitosa con PostgreSQL!";
+    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 } catch (PDOException $error) {
 
-    echo "Error de conexión: " . $error->getMessage();
+    error_log("Error de conexión: " . $error->getMessage());
+
+    die("No fue posible conectar con la base de datos.");
 
 }
 
