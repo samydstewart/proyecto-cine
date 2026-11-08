@@ -139,7 +139,14 @@ $funciones = $consulta->fetchAll(PDO::FETCH_ASSOC);
             border-radius: 10px;
             color: #ccc;
         }
-
+        .cerrar-sesion {
+            color: white;
+            text-decoration: none;
+            float: right;
+            background: #a52a2a;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
     </style>
 
 </head>
@@ -147,6 +154,7 @@ $funciones = $consulta->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
     <header>
+        <a href="logout.php" class="cerrar-sesion">Cerrar sesión</a>
 
         <h1>CINE COLOMBIA</h1>
 
