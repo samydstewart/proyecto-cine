@@ -258,27 +258,62 @@ $asientos = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
     <?php if (count($asientos) > 0): ?>
 
+    <form action="confirmar_compra.php" method="POST">
+
+        <input type="hidden"
+               name="id_funcion"
+               value="<?php echo $funcion['id_funcion']; ?>">
+
         <div class="asientos">
 
             <?php foreach ($asientos as $asiento): ?>
 
-                <div class="asiento <?php echo $asiento["estado"] ? "disponible" : "ocupado"; ?>">
+                <?php if ($asiento["estado"]): ?>
 
-                    <?php echo htmlspecialchars($asiento["numero_asiento"]); ?>
+                    <div class="asiento disponible">
 
-                </div>
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="id_asiento"
+                                value="<?php echo $asiento['id_asiento']; ?>"
+                                required
+                            >
+
+                            <?php echo htmlspecialchars($asiento["numero_asiento"]); ?>
+
+                        </label>
+
+                    </div>
+
+                <?php else: ?>
+
+                    <div class="asiento ocupado">
+
+                        <?php echo htmlspecialchars($asiento["numero_asiento"]); ?>
+
+                    </div>
+
+                <?php endif; ?>
 
             <?php endforeach; ?>
 
         </div>
 
-    <?php else: ?>
+        <button type="submit" class="boton-comprar">
+            Continuar con la compra
+        </button>
 
-        <p class="sin-asientos">
-            Esta sala todavía no tiene asientos registrados.
-        </p>
+    </form>
 
-    <?php endif; ?>
+<?php else: ?>
+
+    <p class="sin-asientos">
+        Esta sala todavía no tiene asientos registrados.
+    </p>
+
+<?php endif; ?>
 
     <a href="comprar.php" class="boton">
         Volver a funciones
