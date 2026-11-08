@@ -36,7 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["correo"] = $usuario["correo_u"];
             $_SESSION["id_rol"] = $usuario["id_rol"];
 
-            $mensaje = "¡Bienvenido, " . $usuario["nomb1_u"] . "! Has iniciado sesión correctamente.";
+            header("Location: comprar.php");
+            exit();
 
         } else {
 
