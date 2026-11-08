@@ -1,3 +1,87 @@
+<?php
+
+require_once "conexion.php";
+
+$mensaje = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $nombre = trim($_POST["nombre"]);
+    $segundo_nombre = trim($_POST["segundo_nombre"]);
+    $apellido = trim($_POST["apellido"]);
+    $correo = trim($_POST["correo"]);
+    $telefono = trim($_POST["telefono"]);
+    $contrasena = $_POST["contrasena"];
+    $confirmar = $_POST["confirmar"];
+
+    // Verificar que las contraseñas coincidan
+    if ($contrasena !== $confirmar) {
+
+        $mensaje = "Las contraseñas no coinciden.";
+
+    } else {
+
+        try {
+
+            // Buscar el rol correspondiente al usuario
+            $consultaRol = $conexion->prepare(
+                "SELECT id_rol FROM roles WHERE nomb_rol = :rol"
+            );
+
+            $consultaRol->execute([
+                ":rol" => "Cliente"
+            ]);
+
+            $rol = $consultaRol->fetch(PDO::FETCH_ASSOC);
+
+            if (!$rol) {
+
+                $mensaje = "No se encontró el rol de usuario en la base de datos.";
+
+            } else {
+
+                // Encriptar la contraseña
+                $passwordHash = password_hash(
+                    $contrasena,
+                    PASSWORD_DEFAULT
+                );
+
+                // Insertar el usuario
+                $sql = "INSERT INTO Usuarios
+                (nomb1_u, nomb2_u, apel_u, correo_u, contraseña_u, tel_u, id_rol)
+                VALUES
+                (:nombre, :segundo, :apellido, :correo, :password, :telefono, :rol)";
+
+                $consulta = $conexion->prepare($sql);
+
+                $consulta->execute([
+                    ":nombre" => $nombre,
+                    ":segundo" => $segundo_nombre ?: null,
+                    ":apellido" => $apellido,
+                    ":correo" => $correo,
+                    ":password" => $passwordHash,
+                    ":telefono" => $telefono,
+                    ":rol" => $rol["id_rol"]
+                ]);
+
+                $mensaje = "¡Registro exitoso! Ya puedes iniciar sesión.";
+
+            }
+
+        } catch (PDOException $error) {
+
+            if ($error->getCode() == "23505") {
+                $mensaje = "El correo o teléfono ya se encuentra registrado.";
+            } else {
+                $mensaje = "Ocurrió un error al registrar el usuario.";
+                error_log($error->getMessage());
+            }
+
+        }
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 
