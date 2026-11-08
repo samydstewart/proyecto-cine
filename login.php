@@ -29,7 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $contrasena,
             $usuario["contraseña_u"]
         )) {
-
+            // Protege la sesion del usuario
+            session_regenerate_id(true);
             // Guardar información del usuario en la sesión
             $_SESSION["id_usuario"] = $usuario["id_usuario"];
             $_SESSION["nombre"] = $usuario["nomb1_u"];
