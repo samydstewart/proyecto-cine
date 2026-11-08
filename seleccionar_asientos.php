@@ -174,7 +174,38 @@ $asientos = $consulta->fetchAll(PDO::FETCH_ASSOC);
             color: #ccc;
             margin: 30px;
         }
-
+        .asiento label {
+            display: block;
+            cursor: pointer;
+        }
+        
+        .asiento input {
+            display: none;
+        }
+        
+        .asiento.seleccionado {
+            background: #ffd000;
+            color: black;
+            outline: 2px solid white;
+        }
+        
+        .asiento.ocupado {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .boton-comprar {
+            display: block;
+            width: 220px;
+            margin: 30px auto;
+            padding: 14px;
+            background: #ffd000;
+            color: black;
+            border: none;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 
 </head>
