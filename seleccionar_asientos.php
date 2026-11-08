@@ -44,13 +44,24 @@ if (!$funcion) {
 }
 
 // Consultar los asientos de la sala
-$sql = "SELECT *
-        FROM asientos
-        WHERE id_sala = :id_sala
-        ORDER BY numero_asiento ASC";
+$sql = "SELECT
+            a.id_asiento,
+            a.numero_asiento,
+            CASE
+                WHEN b.id_boletos IS NULL THEN TRUE
+                ELSE FALSE
+            END AS disponible
+        FROM asientos a
+        LEFT JOIN boletos b
+            ON a.id_asiento = b.id_asiento
+            AND b.id_funcion = :id_funcion
+        WHERE a.id_sala = :id_sala
+        ORDER BY a.numero_asiento ASC";
 
 $consulta = $conexion->prepare($sql);
+
 $consulta->execute([
+    ":id_funcion" => $id_funcion,
     ":id_sala" => $funcion["id_sala"]
 ]);
 
@@ -268,7 +279,7 @@ $asientos = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
             <?php foreach ($asientos as $asiento): ?>
 
-                <?php if ($asiento["estado"]): ?>
+                <?php if ($asiento["disponible"]): ?>
 
                     <div class="asiento disponible">
 
