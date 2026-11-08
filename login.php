@@ -1,3 +1,59 @@
+<?php
+
+session_start();
+
+require_once "conexion.php";
+
+$mensaje = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $correo = trim($_POST["correo"]);
+    $contrasena = $_POST["contrasena"];
+
+    try {
+
+        // Buscar el usuario por su correo
+        $sql = "SELECT * FROM Usuarios WHERE correo_u = :correo";
+
+        $consulta = $conexion->prepare($sql);
+
+        $consulta->execute([
+            ":correo" => $correo
+        ]);
+
+        $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
+
+        // Verificar si existe y si la contraseña es correcta
+        if ($usuario && password_verify(
+            $contrasena,
+            $usuario["contraseña_u"]
+        )) {
+
+            // Guardar información del usuario en la sesión
+            $_SESSION["id_usuario"] = $usuario["id_usuario"];
+            $_SESSION["nombre"] = $usuario["nomb1_u"];
+            $_SESSION["correo"] = $usuario["correo_u"];
+            $_SESSION["id_rol"] = $usuario["id_rol"];
+
+            $mensaje = "¡Bienvenido, " . $usuario["nomb1_u"] . "! Has iniciado sesión correctamente.";
+
+        } else {
+
+            $mensaje = "Correo o contraseña incorrectos.";
+
+        }
+
+    } catch (PDOException $error) {
+
+        error_log($error->getMessage());
+
+        $mensaje = "Ocurrió un error al intentar iniciar sesión.";
+
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -137,7 +193,12 @@
             Ingresa a tu cuenta para continuar.
         </p>
 
-        <form action="#" method="POST">
+        <form action="login.php" method="POST">
+            <?php if (!empty($mensaje)): ?>
+            <p>
+                <?php echo htmlspecialchars($mensaje); ?>
+            </p>
+            <?php endif; ?>
 
             <div class="campo">
 
