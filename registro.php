@@ -15,9 +15,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirmar = $_POST["confirmar"];
 
     // Verificar que las contraseñas coincidan
-    if ($contrasena !== $confirmar) {
+    if (strlen($contrasena) < 8) {
 
-        $mensaje = "Las contraseñas no coinciden.";
+    $mensaje = "La contraseña debe tener al menos 8 caracteres.";
+
+} elseif ($contrasena !== $confirmar) {
+
+    $mensaje = "Las contraseñas no coinciden.";
 
     } else {
 
