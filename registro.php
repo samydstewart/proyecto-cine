@@ -222,7 +222,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Regístrate y disfruta de la experiencia del cine.
         </p>
 
-        <form action="#" method="POST">
+        <form action="registro.php" method="POST">
+            <?php if (!empty($mensaje)): ?>
+                <p><?php echo htmlspecialchars($mensaje); ?></p>
+            <?php endif; ?>
 
             <div class="campo">
                 <label for="nombre">Primer nombre</label>
