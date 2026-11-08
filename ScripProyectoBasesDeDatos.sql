@@ -165,3 +165,10 @@ DROP CONSTRAINT fk_dirige_director,
 ADD CONSTRAINT fk_dirige_director 
     FOREIGN KEY (id_director) REFERENCES directores(id_director) 
     ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE asientos
+DROP COLUMN estado;
+
+ALTER TABLE boletos
+ADD CONSTRAINT uq_asiento_funcion
+UNIQUE (id_funcion, id_asiento);
