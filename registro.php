@@ -9,25 +9,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = trim($_POST["nombre"]);
     $segundo_nombre = trim($_POST["segundo_nombre"]);
     $apellido = trim($_POST["apellido"]);
-    $correo = trim($_POST["correo"]);
     $telefono = trim($_POST["telefono"]);
     $contrasena = $_POST["contrasena"];
     $confirmar = $_POST["confirmar"];
-
-    // Verificar que las contraseñas coincidan
-    if (strlen($contrasena) < 8) {
-
-    $mensaje = "La contraseña debe tener al menos 8 caracteres.";
-
-} elseif ($contrasena !== $confirmar) {
-
-    $mensaje = "Las contraseñas no coinciden.";
-
+    $correo = trim($_POST["correo"]);
+    if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+        $mensaje = "El correo electrónico no es válido.";
+    } elseif (strlen($contrasena) < 8) {
+        $mensaje = "La contraseña debe tener al menos 8 caracteres.";
+    } elseif ($contrasena !== $confirmar) {
+        $mensaje = "Las contraseñas no coinciden.";
     } else {
-
         try {
-
-            // Buscar el rol correspondiente al usuario
             $consultaRol = $conexion->prepare(
                 "SELECT id_rol FROM roles WHERE nomb_rol = :rol"
             );
