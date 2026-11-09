@@ -277,3 +277,603 @@ body {
         grid-template-columns: 1fr;
     }
 }
+/* ==========================================================================
+   PORTADA
+   ========================================================================== */
+.portada {
+    min-height: 420px;
+    padding: 80px 8%;
+    display: flex;
+    align-items: center;
+    background:
+        linear-gradient(90deg, var(--color-bg-main) 35%, rgba(20, 20, 20, 0.5)),
+        linear-gradient(135deg, #3a0a0d, var(--color-bg-main));
+}
+
+.portada-contenido {
+    max-width: 600px;
+}
+
+.portada h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: var(--color-text-main);
+}
+
+.portada h1 span {
+    color: var(--color-primary);
+}
+
+.portada p {
+    color: var(--color-text-label);
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.boton-portada {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: var(--color-text-main);
+    padding: 14px 25px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color var(--transition-fast);
+}
+
+.boton-portada:hover {
+    background-color: var(--color-primary-hover);
+}
+
+/* ==========================================================================
+   PRÓXIMOS ESTRENOS
+   ========================================================================== */
+.estrenos {
+    background-color: var(--color-bg-header);
+    padding: 55px 7%;
+    text-align: center;
+}
+
+.estrenos h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    color: var(--color-primary);
+}
+
+.estrenos p {
+    color: var(--color-text-label);
+    font-size: 17px;
+}
+
+/* ==========================================================================
+   SINOPSIS AL PASAR EL CURSOR
+   ========================================================================== */
+.movie-card {
+    position: relative;
+    transition: transform var(--transition-fast);
+}
+
+.movie-card:hover {
+    transform: translateY(-4px);
+}
+
+.movie-sinopsis {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: var(--color-text-main);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    pointer-events: none;
+    z-index:2;
+    overflow: hidden;
+}
+
+.movie-sinopsis h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-primary);
+}
+
+.movie-sinopsis p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+}
+
+.movie-card:hover .movie-sinopsis {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   NAVEGACIÓN CON SESIÓN
+   ========================================================================== */
+.main-header {
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.logo a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.acciones {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.acciones span {
+    color: var(--color-text-label);
+}
+
+.btn-nav {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-text-main);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-main);
+    text-decoration: none;
+    font-weight: bold;
+    transition: all var(--transition-fast);
+}
+
+.btn-nav:hover {
+    background-color: var(--color-text-main);
+    color: var(--color-bg-header);
+}
+
+.btn-nav--primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.btn-nav--primary:hover {
+    background-color: var(--color-primary-hover);
+    color: var(--color-text-main);
+}
+
+.nav-links a.activo {
+    color: var(--color-primary);
+}
+
+/* ==========================================================================
+   PÁGINAS INTERNAS (comprar, login, registro)
+   ========================================================================== */
+.pagina {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.pagina-centrada {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.titulo-seccion {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+}
+
+.descripcion {
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+}
+
+.alerta {
+    background-color: var(--color-bg-input);
+    border-left: 4px solid var(--color-primary);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+}
+
+.auth-box {
+    background-color: var(--color-bg-card);
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-box h2 {
+    margin-bottom: 0.5rem;
+}
+
+.enlace {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+.enlace a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.cuadricula-funciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.tarjeta-funcion {
+    background-color: var(--color-bg-card);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border: var(--border-dark);
+}
+
+.tarjeta-funcion h3 {
+    color: var(--color-text-main);
+    margin-bottom: 1rem;
+}
+
+.tarjeta-funcion p {
+    color: var(--color-text-label);
+    margin-bottom: 0.5rem;
+}
+
+.precio {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--color-rating);
+    margin-top: 0.5rem;
+}
+
+.btn-primario {
+    display: block;
+    text-align: center;
+    background-color: var(--color-primary);
+    color: var(--color-text-main);
+    padding: 0.75rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 1rem;
+    transition: background-color var(--transition-fast);
+}
+
+.btn-primario:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.tarjeta-mensaje {
+    background-color: var(--color-bg-card);
+    padding: 2.5rem;
+    border-radius: var(--radius-md);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+/* ==========================================================================
+   SELECCIÓN DE ASIENTOS
+   ========================================================================== */
+.informacion-funcion {
+    background-color: var(--color-bg-card);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+.pantalla {
+    background-color: #ddd;
+    color: #111;
+    text-align: center;
+    padding: 0.75rem;
+    width: 70%;
+    margin: 2rem auto;
+    border-radius: 50% 50% 5px 5px;
+    font-weight: bold;
+}
+
+.leyenda {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.leyenda-item {
+    padding: 0.5rem 0.9rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+}
+
+.asientos {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0.75rem;
+    max-width: 550px;
+    margin: 2rem auto;
+}
+
+.asiento {
+    padding: 0.75rem 0.25rem;
+    text-align: center;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.asiento input {
+    display: none;
+}
+
+.asiento.disponible {
+    background-color: #168b45;
+    color: var(--color-text-main);
+}
+
+.asiento.disponible:hover {
+    outline: 2px solid var(--color-text-main);
+}
+
+/* Asiento marcado: el radio está seleccionado */
+.asiento:has(input:checked) {
+    background-color: var(--color-rating);
+    color: #000;
+    outline: 2px solid var(--color-text-main);
+}
+
+.asiento.ocupado {
+    background-color: #a52a2a;
+    color: var(--color-text-main);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.leyenda-item.disponible {
+    background-color: #168b45;
+    color: var(--color-text-main);
+}
+
+.leyenda-item.ocupado {
+    background-color: #a52a2a;
+    color: var(--color-text-main);
+}
+
+.leyenda-item.seleccionado {
+    background-color: var(--color-rating);
+    color: #000;
+}
+
+.btn-comprar {
+    display: block;
+    width: 220px;
+    margin: 2rem auto;
+}
+
+.btn-volver {
+    display: block;
+    width: 220px;
+    margin: 2rem auto;
+    text-align: center;
+    padding: 0.75rem;
+    border: 1px solid var(--color-text-main);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-main);
+    text-decoration: none;
+}
+
+.btn-volver:hover {
+    background-color: var(--color-text-main);
+    color: var(--color-bg-header);
+}
+
+.alerta {
+    text-align: center;
+}
+
+/* ==========================================================================
+   PÁGINA DE DETALLE DE PELÍCULA
+   ========================================================================== */
+.detalle-pelicula {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.detalle-poster img {
+    width: 100%;
+    border-radius: var(--radius-md);
+    display: block;
+}
+
+.detalle-titulo {
+    font-size: 2.2rem;
+    color: var(--color-text-main);
+    margin-bottom: 0.5rem;
+}
+
+.detalle-meta {
+    color: var(--color-text-muted);
+    margin-bottom: 1.25rem;
+}
+
+.detalle-sinopsis {
+    color: var(--color-text-label);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+}
+
+.detalle-info p {
+    margin-bottom: 0.75rem;
+    color: var(--color-text-label);
+}
+
+.funciones-seccion {
+    margin-top: 1rem;
+}
+
+.dia-funciones {
+    margin-bottom: 2rem;
+}
+
+.dia-titulo {
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+    text-transform: capitalize;
+}
+
+.horarios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.horario {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 150px;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-bg-card);
+    border: var(--border-dark);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-main);
+    text-decoration: none;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.horario:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-bg-input);
+}
+
+.horario-hora {
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+
+.horario-sala {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.horario-precio {
+    color: var(--color-rating);
+    font-weight: bold;
+}
+
+.titulo-enlace {
+    color: var(--color-text-main);
+    text-decoration: none;
+}
+
+.titulo-enlace:hover {
+    color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+    .detalle-pelicula {
+        grid-template-columns: 1fr;
+    }
+
+    .detalle-poster {
+        max-width: 260px;
+    }
+}
+
+/* ==========================================================================
+   PAGO
+   ========================================================================== */
+[hidden] {
+    display: none !important;
+}
+
+.form-pago {
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+.medios {
+    border: none;
+    margin-bottom: 1.5rem;
+}
+
+.medios legend {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-main);
+}
+
+.medio-opcion {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.75rem;
+    background-color: var(--color-bg-card);
+    border: var(--border-dark);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.medio-opcion:has(input:checked) {
+    border-color: var(--color-primary);
+}
+
+.medio-nombre {
+    font-weight: bold;
+}
+
+.medio-total {
+    color: var(--color-rating);
+    font-weight: bold;
+}
+
+.medio-total small,
+.medio-nota {
+    display: block;
+    color: var(--color-text-muted);
+    font-weight: normal;
+    font-size: 0.8rem;
+}
+
+.medio-nota {
+    grid-column: 2 / 4;
+}
+
+.datos-tarjeta {
+    background-color: var(--color-bg-card);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.5rem;
+}
+
+.datos-tarjeta h3 {
+    margin-bottom: 1rem;
+    color: var(--color-primary);
+}
+
+.fila-tarjeta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.datos-tarjeta .nota {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}

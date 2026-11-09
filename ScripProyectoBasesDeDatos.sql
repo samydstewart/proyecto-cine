@@ -165,3 +165,24 @@ DROP CONSTRAINT fk_dirige_director,
 ADD CONSTRAINT fk_dirige_director 
     FOREIGN KEY (id_director) REFERENCES directores(id_director) 
     ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE asientos
+DROP COLUMN estado;
+
+ALTER TABLE boletos
+ADD CONSTRAINT uq_asiento_funcion
+UNIQUE (id_funcion, id_asiento);
+
+INSERT INTO tipos_venta (nomb_tipo)
+VALUES
+('Venta en línea');
+
+INSERT INTO Pagos_Factura (nomb_medio, comision)
+VALUES
+('Tarjeta', 0),
+('PSE', 0);
+-- Roles del sistema
+INSERT INTO roles (nomb_rol)
+VALUES
+('Administrador'),
+('Cliente');

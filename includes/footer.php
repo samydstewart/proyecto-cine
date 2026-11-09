@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <footer class="main-footer">
-    <p>&copy; <?= date('Y') ?> Cine Colombia</p>
+<footer class="main-footer">
+    <p>&copy; <?= date('Y') ?> Cine Colombia - Sistema de Gestión de Películas</p>
 </footer>
 
 </body>
