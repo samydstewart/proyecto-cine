@@ -12,3 +12,6 @@ sslmode=require
 if (!$conexion) {
     die("Error conectando con Neon");
 }
+?>
+
+

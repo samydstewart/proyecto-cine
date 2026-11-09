@@ -1,0 +1,279 @@
+/* ==========================================================================
+   1. VARIABLES GLOBALES (Design System para todas las páginas)
+   ========================================================================== */
+:root {
+    /* Paleta de Colores Principal */
+    --color-primary: #e50914;        /* Rojo Cine */
+    --color-primary-hover: #b20710;  /* Rojo Oscuro */
+    --color-bg-main: #141414;        /* Fondo General Oscuro */
+    --color-bg-card: #1f1f1f;        /* Fondo de Tarjetas / Asides */
+    --color-bg-input: #2b2b2b;       /* Fondo de Campos de Texto */
+    --color-bg-header: #000000;      /* Fondo Encabezado / Pie */
+    
+    /* Colores de Texto */
+    --color-text-main: #ffffff;
+    --color-text-muted: #aaaaaa;
+    --color-text-label: #cccccc;
+    --color-rating: #f5c518;         /* Dorado Estrellas */
+    
+    /* Bordes y Estilos */
+    --border-dark: 1px solid #333333;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition-fast: 0.3s ease;
+}
+
+/* ==========================================================================
+   2. RESET BÁSICO Y CONFIGURACIÓN GLOBAL
+   ========================================================================== */
+/* CORRECCIÓN 1: Se cambió '-' por '*' */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--color-bg-main);
+    color: var(--color-text-main);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   3. ENCABEZADO Y NAVEGACIÓN (Reutilizable en todas las páginas)
+   ========================================================================== */
+.main-header {
+    background-color: var(--color-bg-header);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.logo h1 {
+    color: var(--color-primary);
+    font-size: 1.8rem;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: var(--color-text-main);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.nav-links a:hover {
+    color: var(--color-primary);
+}
+
+/* ==========================================================================
+   4. ESTRUCTURA PRINCIPAL (LAYOUT)
+   ========================================================================== */
+.container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    flex: 1;
+}
+
+/* ==========================================================================
+   5. BARRA LATERAL Y FORMULARIO DE FILTROS
+   ========================================================================== */
+.filters-sidebar {
+    background-color: var(--color-bg-card);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    height: fit-content;
+}
+
+.filters-sidebar h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    border-bottom: var(--border-dark);
+    padding-bottom: 0.5rem;
+}
+
+.filter-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    color: var(--color-text-label);
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: var(--radius-sm);
+    border: var(--border-dark);
+    background-color: var(--color-bg-input);
+    color: var(--color-text-main);
+}
+
+.btn-filter {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: var(--color-primary);
+    color: var(--color-text-main);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.btn-filter:hover {
+    background-color: var(--color-primary-hover);
+}
+
+/* ==========================================================================
+   6. REJILLA Y TARJETAS DE PELÍCULAS
+   ========================================================================== */
+/* 1. REJILLA DE PELÍCULAS */
+/* ESTRUCTURA DE LA REJILLA */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* TARJETA DE LA PELÍCULA */
+.movie-card {
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+.movie-poster {
+    position: relative;
+    width: 100%;
+}
+
+.movie-poster img {
+    width: 100%;
+    /* Altura fija para que todas las imágenes sean verticales tipo póster */
+    height: 320px; 
+    object-fit: cover;
+    display: block;
+}
+
+.movie-year {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+}
+
+.movie-info {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.movie-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.movie-info p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+}
+
+.movie-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rating {
+    font-weight: bold;
+    color: var(--color-rating);
+}
+
+.btn-tickets {
+    display: inline-block;
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-tickets:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-main);
+}
+
+/* ==========================================================================
+   7. PIE DE PÁGINA
+   ========================================================================== */
+.main-footer {
+    width: 100%;
+    margin-top: auto;
+    padding: 1.5rem 1rem;
+    background-color: var(--color-bg-header);
+    border-top: 2px solid var(--color-primary);
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777777;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 150px);
+}
+
+.login-box {
+    background-color: var(--color-bg-card);
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* ==========================================================================
+   8. RESPONSIVO (MÓVILES)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
