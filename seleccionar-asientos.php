@@ -21,6 +21,7 @@ $sql = "SELECT
             f.fecha_hora,
             f.precio,
             p.nomb_p,
+            p.id_peliculas,
             s.id_sala,
             s.nomb_sala
         FROM funciones f
@@ -49,7 +50,7 @@ $sql = "SELECT
         LEFT JOIN boletos b
             ON a.id_asiento = b.id_asiento
             AND b.id_funcion = :id_funcion
-        WHERE a.id_sala = :id_sala
+        WHERE a.id_sala = :id_sala AND a.estado = TRUE
         ORDER BY a.numero_asiento ASC";
 
 $consulta = $conexion->prepare($sql);
@@ -58,6 +59,10 @@ $consulta->execute([
     ":id_sala" => $funcion["id_sala"]
 ]);
 $asientos = $consulta->fetchAll();
+foreach ($asientos as &$asiento) {
+    $asiento["disponible"] = in_array($asiento["disponible"], [true, 't', 1, '1'], true);
+}
+unset($asiento);
 
 $titulo = "Seleccionar asiento | Cine Colombia";
 
@@ -125,7 +130,7 @@ require 'includes/header.php';
 
     <?php endif; ?>
 
-    <a href="comprar.php" class="btn-volver">← Volver a funciones</a>
+    <a href="pelicula.php?id=<?= $funcion['id_peliculas'] ?>" class="btn-volver">← Volver a la película</a>
 
 </main>
 

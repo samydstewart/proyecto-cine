@@ -90,13 +90,13 @@ if (str_contains($medio["nomb_medio"], "Tarjeta")) {
 
 // 3. Registrar la compra en una sola transacción
 try {
+    if ($conexion->inTransaction()) {
+        $conexion->rollBack();
+    }
     $conexion->beginTransaction();
-
     $consulta = $conexion->prepare(
-        "SELECT id_sala
-         FROM funciones
-         WHERE id_funcion = :funcion
-           AND fecha_hora >= CURRENT_TIMESTAMP
+        "SELECT id_sala FROM funciones
+         WHERE id_funcion = :funcion AND fecha_hora >= CURRENT_TIMESTAMP
          FOR UPDATE"
     );
     $consulta->execute([":funcion" => $id_funcion]);
@@ -106,22 +106,18 @@ try {
         throw new RuntimeException("La función ya no está disponible.");
     }
 
+    $paso = "validar asiento";
     $consulta = $conexion->prepare(
-        "SELECT 1
-         FROM asientos
-         WHERE id_asiento = :asiento
-           AND id_sala = :sala
-           AND estado = TRUE"
+        "SELECT 1 FROM asientos
+         WHERE id_asiento = :asiento AND id_sala = :sala AND estado = TRUE"
     );
-    $consulta->execute([
-        ":asiento" => $id_asiento,
-        ":sala"    => $funcion["id_sala"],
-    ]);
+    $consulta->execute([":asiento" => $id_asiento, ":sala" => $funcion["id_sala"]]);
 
     if (!$consulta->fetch()) {
         throw new RuntimeException("Ese asiento no es válido para esta sala.");
     }
 
+    $paso = "insertar boleto";
     $consulta = $conexion->prepare(
         "INSERT INTO boletos (id_usuario, id_asiento, id_tipo_venta, id_forma_pago, id_funcion)
          VALUES (:usuario, :asiento, :tipo_venta, :forma_pago, :funcion)"
@@ -135,24 +131,15 @@ try {
     ]);
 
     $conexion->commit();
-
-    header("Location: comprar.php?compra=ok");
+    header("Location: mis-boletos.php?compra=ok");
     exit();
-
 } catch (PDOException $error) {
 
     if ($conexion->inTransaction()) {
         $conexion->rollBack();
     }
 
-    // Índice único boletos_asiento_funcion_unico
-    if ($error->getCode() === "23505") {
-        volver_a_seleccion($id_funcion, "Ese asiento ya fue comprado por otra persona.");
-    }
-
-    error_log("Error al registrar compra: " . $error->getMessage());
-    volver_a_seleccion($id_funcion, "No se pudo registrar la compra. Intenta de nuevo.");
-
+    volver_a_seleccion($id_funcion, "ERROR en paso [$paso]: " . $error->getMessage());
 } catch (RuntimeException $error) {
 
     if ($conexion->inTransaction()) {

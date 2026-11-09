@@ -29,9 +29,11 @@ $logueado = isset($_SESSION['id_usuario']);
 
     <nav>
         <ul class="nav-links">
-            <li><a href="index.php" class="<?= activo('index.php', $pagina_actual) ?>">Cartelera</a></li>
-            <li><a href="comprar.php" class="<?= activo('comprar.php', $pagina_actual) ?>">Comprar tiquetes</a></li>
-        </ul>
+    <li><a href="index.php" class="<?= activo('index.php', $pagina_actual) ?>">Cartelera</a></li>
+    <?php if ($logueado): ?>
+        <li><a href="mis-boletos.php" class="<?= activo('mis-boletos.php', $pagina_actual) ?>">Mis boletos</a></li>
+    <?php endif; ?>
+</ul>
     </nav>
 
     <div class="acciones">

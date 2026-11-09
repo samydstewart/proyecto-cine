@@ -28,7 +28,7 @@ if (!$pelicula) {
 }
 
 // 3. Directores de la película
-$sql = "SELECT d.nomb1_d, d.apel_d
+$sql = "SELECT d.nomb1_d, d.apel_d, d.foto_url
         FROM dirige di
         JOIN directores d ON d.id_director = di.id_director
         WHERE di.id_peliculas = :id";
@@ -38,7 +38,7 @@ $consulta->execute([":id" => $id]);
 $directores = $consulta->fetchAll();
 
 // 4. Actores de la película
-$sql = "SELECT a.nomb1_a, a.apel_a
+$sql = "SELECT a.nomb1_a, a.apel_a, a.foto_url
         FROM actua ac
         JOIN actores a ON a.id_actor = ac.id_actor
         WHERE ac.id_peliculas = :id
@@ -114,7 +114,37 @@ require 'includes/header.php';
         </div>
 
     </div>
+    <section class="personas-seccion">
 
+    <?php if (count($directores) > 0): ?>
+        <h3 class="subtitulo">Director</h3>
+        <div class="personas">
+            <?php foreach ($directores as $d): ?>
+                <?php $nombre = $d["nomb1_d"] . " " . $d["apel_d"]; ?>
+                <figure class="persona">
+                    <img src="<?= htmlspecialchars(url_imagen($d["foto_url"], FOTO_RESPALDO)) ?>"
+                         alt="<?= htmlspecialchars($nombre) ?>">
+                    <figcaption><?= htmlspecialchars($nombre) ?></figcaption>
+                </figure>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (count($actores) > 0): ?>
+        <h3 class="subtitulo">Reparto</h3>
+        <div class="personas">
+            <?php foreach ($actores as $a): ?>
+                <?php $nombre = $a["nomb1_a"] . " " . $a["apel_a"]; ?>
+                <figure class="persona">
+                    <img src="<?= htmlspecialchars(url_imagen($a["foto_url"], FOTO_RESPALDO)) ?>"
+                         alt="<?= htmlspecialchars($nombre) ?>">
+                    <figcaption><?= htmlspecialchars($nombre) ?></figcaption>
+                </figure>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
+</section>
     <section class="funciones-seccion">
 
         <h2 class="titulo-seccion">Funciones disponibles</h2>

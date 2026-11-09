@@ -6,6 +6,10 @@ require_once "includes/conexion.php";
 
 $mensaje = "";
 
+if (($_GET["registro"] ?? "") === "ok") {
+    $mensaje = "¡Cuenta creada! Ya puedes iniciar sesión.";
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $correo = trim($_POST["correo"]);
@@ -37,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["correo"] = $usuario["correo_u"];
             $_SESSION["id_rol"] = $usuario["id_rol"];
 
-            header("Location: comprar.php");
+            header("Location: index.php");
             exit();
 
         } else {

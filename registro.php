@@ -34,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!$rol) {
 
                 $mensaje = "No se encontró el rol de usuario en la base de datos.";
-
             } else {
 
                 // Encriptar la contraseña
@@ -61,10 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ":rol" => $rol["id_rol"]
                 ]);
 
-                $mensaje = "¡Registro exitoso! Ya puedes iniciar sesión.";
-
+                header("Location: login.php?registro=ok");
+                exit();
             }
-
         } catch (PDOException $error) {
 
             if ($error->getCode() == "23505") {
@@ -73,7 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mensaje = "Ocurrió un error al registrar el usuario.";
                 error_log($error->getMessage());
             }
-
         }
     }
 }
@@ -97,43 +94,43 @@ require 'includes/header.php';
             <div class="filter-group">
                 <label for="nombre">Primer nombre</label>
                 <input type="text" id="nombre" name="nombre"
-                       placeholder="Ingresa tu primer nombre" required>
+                    placeholder="Ingresa tu primer nombre" required>
             </div>
 
             <div class="filter-group">
                 <label for="segundo_nombre">Segundo nombre</label>
                 <input type="text" id="segundo_nombre" name="segundo_nombre"
-                       placeholder="Ingresa tu segundo nombre">
+                    placeholder="Ingresa tu segundo nombre">
             </div>
 
             <div class="filter-group">
                 <label for="apellido">Apellidos</label>
                 <input type="text" id="apellido" name="apellido"
-                       placeholder="Ingresa tus apellidos" required>
+                    placeholder="Ingresa tus apellidos" required>
             </div>
 
             <div class="filter-group">
                 <label for="correo">Correo electrónico</label>
                 <input type="email" id="correo" name="correo"
-                       placeholder="ejemplo@correo.com" required>
+                    placeholder="ejemplo@correo.com" required>
             </div>
 
             <div class="filter-group">
                 <label for="telefono">Número de teléfono</label>
                 <input type="tel" id="telefono" name="telefono"
-                       placeholder="Ingresa tu teléfono" required>
+                    placeholder="Ingresa tu teléfono" required>
             </div>
 
             <div class="filter-group">
                 <label for="contrasena">Contraseña</label>
                 <input type="password" id="contrasena" name="contrasena"
-                       placeholder="Crea una contraseña" required>
+                    placeholder="Crea una contraseña" required>
             </div>
 
             <div class="filter-group">
                 <label for="confirmar">Confirmar contraseña</label>
                 <input type="password" id="confirmar" name="confirmar"
-                       placeholder="Repite tu contraseña" required>
+                    placeholder="Repite tu contraseña" required>
             </div>
 
             <button type="submit" class="btn-filter">Crear cuenta</button>
