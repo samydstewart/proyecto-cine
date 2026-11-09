@@ -16,7 +16,7 @@ $sql = "SELECT
             f.fecha_hora,
             f.precio,
             p.nomb_p,
-            p.duracion_M,
+            p.duracion_M AS duracion,
             s.nomb_sala
         FROM funciones f
         INNER JOIN peliculas p
@@ -157,6 +157,8 @@ $funciones = $consulta->fetchAll(PDO::FETCH_ASSOC);
         <a href="logout.php" class="cerrar-sesion">Cerrar sesión</a>
 
         <h1>CINE COLOMBIA</h1>
+       
+        <p>Bienvenido, <?php echo htmlspecialchars($_SESSION["nombre"]); ?></p>
 
         <a href="index.php">Volver al inicio</a>
 
@@ -194,7 +196,7 @@ $funciones = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
                         <p>
                             <strong>Duración:</strong>
-                            <?php echo htmlspecialchars($funcion["duracion_m"]); ?> minutos
+                            <?php echo htmlspecialchars($funcion["duracion"]); ?> minutos
                         </p>
 
                         <p class="precio">
