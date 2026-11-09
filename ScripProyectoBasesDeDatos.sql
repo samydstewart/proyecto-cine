@@ -181,3 +181,8 @@ INSERT INTO Pagos_Factura (nomb_medio, comision)
 VALUES
 ('Tarjeta', 0),
 ('PSE', 0);
+-- Roles del sistema
+INSERT INTO roles (nomb_rol)
+VALUES
+('Administrador'),
+('Cliente');
