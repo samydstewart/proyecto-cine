@@ -48,13 +48,20 @@ function tarjeta_boleto(array $b): string
     $clase = (int) $b["vigente"] === 1 ? "boleto" : "boleto boleto-pasado";
 
     return '<article class="' . $clase . '">'
-        . '<p class="boleto-codigo">Boleto #' . (int) $b["id_boletos"] . '</p>'
-        . '<h3>' . htmlspecialchars($b["nomb_p"]) . '</h3>'
-        . '<p><strong>Fecha:</strong> ' . date("d/m/Y h:i A", strtotime($b["fecha_hora"])) . '</p>'
-        . '<p><strong>Sala:</strong> ' . htmlspecialchars($b["nomb_sala"]) . '</p>'
-        . '<p><strong>Asiento:</strong> ' . htmlspecialchars($b["numero_asiento"]) . '</p>'
-        . '<p><strong>Pagado con:</strong> ' . htmlspecialchars($b["nomb_medio"]) . '</p>'
-        . '<p class="boleto-precio">$' . number_format($b["precio"], 0, ",", ".") . '</p>'
+        . '<header class="boleto-cabecera">'
+        .     '<span class="boleto-cine">CINE COLOMBIA</span>'
+        .     '<span class="boleto-numero">Nº ' . str_pad((string) (int) $b["id_boletos"], 6, "0", STR_PAD_LEFT) . '</span>'
+        . '</header>'
+        . '<div class="boleto-cuerpo">'
+        .     '<h3>' . htmlspecialchars($b["nomb_p"]) . '</h3>'
+        .     '<p><strong>Fecha:</strong> ' . date("d/m/Y h:i A", strtotime($b["fecha_hora"])) . '</p>'
+        .     '<p><strong>Sala:</strong> ' . htmlspecialchars($b["nomb_sala"]) . '</p>'
+        .     '<p><strong>Asiento:</strong> ' . htmlspecialchars($b["numero_asiento"]) . '</p>'
+        .     '<p><strong>Pagado con:</strong> ' . htmlspecialchars($b["nomb_medio"]) . '</p>'
+        .     '<p class="boleto-precio">$' . number_format($b["precio"], 0, ",", ".") . '</p>'
+        . '</div>'
+        . '<div class="boleto-corte"></div>'
+        . '<div class="boleto-codigo-barras" aria-hidden="true"></div>'
         . '</article>';
 }
 
