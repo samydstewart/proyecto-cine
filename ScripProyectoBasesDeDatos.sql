@@ -186,3 +186,130 @@ INSERT INTO roles (nomb_rol)
 VALUES
 ('Administrador'),
 ('Cliente');
+-- ============================================================
+-- 1. VALIDAR DISPONIBILIDAD (EVITAR DOBLE VENTA DE ASIENTO)
+-- ============================================================
+CREATE OR REPLACE FUNCTION validar_disponibilidad_asiento()
+RETURNS TRIGGER AS $$
+DECLARE
+    v_ocupado BOOLEAN;
+BEGIN
+    SELECT EXISTS (
+        SELECT 1 FROM boletos 
+        WHERE id_asiento = NEW.id_asiento AND id_funcion = NEW.id_funcion
+    ) INTO v_ocupado;
+
+    IF v_ocupado THEN
+        RAISE EXCEPTION 'El asiento con ID % ya se encuentra vendido para esta función.', NEW.id_asiento;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_validar_disponibilidad
+BEFORE INSERT ON boletos
+FOR EACH ROW
+EXECUTE FUNCTION validar_disponibilidad_asiento();
+
+
+-- ============================================================
+-- 2. OCUPAR ASIENTO AUTOMÁTICAMENTE TRAS LA VENTA
+-- ============================================================
+CREATE OR REPLACE FUNCTION actualizar_estado_asiento()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE asientos
+    SET estado = FALSE -- FALSE = Ocupado
+    WHERE id_asiento = NEW.id_asiento;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_ocupar_asiento
+AFTER INSERT ON boletos
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_estado_asiento();
+
+
+-- ============================================================
+-- 3. VALIDAR TRASLAPE DE HORARIOS EN UNA SALA
+-- ============================================================
+CREATE OR REPLACE FUNCTION validar_traslape_funciones()
+RETURNS TRIGGER AS $$
+DECLARE
+    v_duracion_nueva INT;
+    v_conflicto INT;
+BEGIN
+    SELECT duracion_M INTO v_duracion_nueva 
+    FROM peliculas 
+    WHERE id_peliculas = NEW.id_peliculas;
+
+    SELECT COUNT(*) INTO v_conflicto
+    FROM funciones f
+    JOIN peliculas p ON f.id_peliculas = p.id_peliculas
+    WHERE f.id_sala = NEW.id_sala
+      AND f.id_funcion <> NEW.id_funcion
+      AND (
+          NEW.fecha_hora BETWEEN f.fecha_hora AND (f.fecha_hora + (p.duracion_M || ' minutes')::INTERVAL)
+          OR 
+          (NEW.fecha_hora + (v_duracion_nueva || ' minutes')::INTERVAL) BETWEEN f.fecha_hora AND (f.fecha_hora + (p.duracion_M || ' minutes')::INTERVAL)
+      );
+
+    IF v_conflicto > 0 THEN
+        RAISE EXCEPTION 'La sala ya está ocupada por otra función en ese rango de horario.';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_validar_horario_sala
+BEFORE INSERT OR UPDATE ON funciones
+FOR EACH ROW
+EXECUTE FUNCTION validar_traslape_funciones();
+
+
+-- ============================================================
+-- 4. LIBERAR ASIENTO AL CANCELAR O BORRAR UN BOLETO
+-- ============================================================
+CREATE OR REPLACE FUNCTION liberar_asiento_cancelado()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE asientos
+    SET estado = TRUE -- TRUE = Disponible
+    WHERE id_asiento = OLD.id_asiento;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_liberar_asiento
+AFTER DELETE ON boletos
+FOR EACH ROW
+EXECUTE FUNCTION liberar_asiento_cancelado();
+
+
+-- ============================================================
+-- 5. VALIDAR QUE EL ASIENTO PERTENEZCA A LA SALA DE LA FUNCIÓN
+-- ============================================================
+CREATE OR REPLACE FUNCTION validar_asiento_pertenece_sala()
+RETURNS TRIGGER AS $$
+DECLARE
+    v_sala_funcion INT;
+    v_sala_asiento INT;
+BEGIN
+    SELECT id_sala INTO v_sala_funcion FROM funciones WHERE id_funcion = NEW.id_funcion;
+    SELECT id_sala INTO v_sala_asiento FROM asientos WHERE id_asiento = NEW.id_asiento;
+
+    IF v_sala_funcion <> v_sala_asiento THEN
+        RAISE EXCEPTION 'El asiento seleccionado (ID: %) no pertenece a la sala asignada para la función (ID: %).', NEW.id_asiento, NEW.id_funcion;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_validar_sala_asiento
+BEFORE INSERT OR UPDATE ON boletos
+FOR EACH ROW
+EXECUTE FUNCTION validar_asiento_pertenece_sala();
