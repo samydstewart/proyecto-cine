@@ -1,7 +1,7 @@
 ```php
 <?php
 
-require_once "includes/verificar_admin.php";
+require_once "/verificar_admin.php";
 
 // Comprobar que la solicitud sea POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
