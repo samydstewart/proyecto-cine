@@ -2,7 +2,7 @@
 // Copia este archivo como config.php y llena tus datos reales.
 return [
     'db' => [
-        'host'    => 'ep-sparkling-poetry-b8020onr-pooler.c-14.us-east-1.aws.neon.tech',
+        'host'    => 'ep-sparkling-poetry-b8020onr.c-14.us-east-1.aws.neon.tech',
         'nombre'  => 'neondb',
         'usuario' => 'neondb_owner',
         'clave'   => 'npg_VC0AUPTWBo9c',

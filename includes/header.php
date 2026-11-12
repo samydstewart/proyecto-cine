@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/seguridad.php';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -11,9 +13,24 @@ function activo(string $archivo, string $actual): string
 }
 
 $logueado = isset($_SESSION['id_usuario']);
-$es_admin = $logueado && isset($_SESSION['id_rol']) && (int) $_SESSION['id_rol'] === 1;
-?>
+$es_admin = $logueado && (int) ($_SESSION['id_rol'] ?? 0) === ROL_ADMIN;
 
+// Notificaciones pendientes del cliente, para el contador del menú
+$pendientes = 0;
+if ($logueado && !$es_admin && isset($conexion)) {
+
+    
+    try {
+        $contador = $conexion->prepare(
+            "SELECT COUNT(*) FROM notificaciones WHERE id_usuario = :u AND estado = 'pendiente'"
+        );
+        $contador->execute([':u' => (int) $_SESSION['id_usuario']]);
+        $pendientes = (int) $contador->fetchColumn();
+    } catch (PDOException $e) {
+        error_log("Contador de notificaciones: " . $e->getMessage());
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -39,28 +56,38 @@ $es_admin = $logueado && isset($_SESSION['id_rol']) && (int) $_SESSION['id_rol']
         <ul class="nav-links">
 
             <li>
-                <a href="index.php"
-                   class="<?= activo('index.php', $pagina_actual) ?>">
+                <a href="index.php" class="<?= activo('index.php', $pagina_actual) ?>">
                     Cartelera
                 </a>
             </li>
 
-            <?php if ($logueado): ?>
+            <?php if ($logueado && !$es_admin): ?>
                 <li>
-                    <a href="mis-boletos.php"
-                       class="<?= activo('mis-boletos.php', $pagina_actual) ?>">
+                    <a href="mis-boletos.php" class="<?= activo('mis-boletos.php', $pagina_actual) ?>">
                         Mis boletos
+                    </a>
+                </li>
+                <li>
+                    <a href="mis-notificaciones.php" class="<?= activo('mis-notificaciones.php', $pagina_actual) ?>">
+                        Notificaciones
+                        <?php if ($pendientes > 0): ?>
+                            <span class="badge"><?= $pendientes ?></span>
+                        <?php endif; ?>
                     </a>
                 </li>
             <?php endif; ?>
 
             <?php if ($es_admin): ?>
                 <li>
-                    <a href="admin_usuarios.php"
-                       class="nav-admin <?= activo('admin_usuarios.php', $pagina_actual) ?>">
-                        ⚙ Administrar usuarios
+                    <a href="admin_usuarios.php" class="nav-admin <?= activo('admin_usuarios.php', $pagina_actual) ?>">
+                        ⚙ Administrar
                     </a>
                 </li>
+            <?php endif; ?>
+            <?php if (!$es_admin): ?>
+                <li>
+    <a href="mi-perfil.php" class="<?= activo('mi-perfil.php', $pagina_actual) ?>">Mi perfil</a>
+</li>
             <?php endif; ?>
 
         </ul>

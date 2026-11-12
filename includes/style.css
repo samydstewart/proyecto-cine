@@ -1214,3 +1214,226 @@ body {
         flex-wrap: wrap;
     }
 }
+
+/* ==========================================================================
+   ADMINISTRACIÓN
+   ========================================================================== */
+.admin-nav {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.admin-nav a.activo {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.form-admin {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    background-color: var(--color-bg-card);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 2rem;
+}
+
+.form-admin label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--color-text-label);
+}
+
+.form-admin input,
+.form-admin select,
+.form-admin textarea {
+    padding: 0.6rem;
+    background-color: var(--color-bg-input);
+    color: var(--color-text-main);
+    border: var(--border-dark);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+}
+
+.form-admin .completo {
+    grid-column: 1 / -1;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.tabla th,
+.tabla td {
+    padding: 0.6rem;
+    border-bottom: var(--border-dark);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tabla th {
+    color: var(--color-primary);
+}
+
+.btn-peligro {
+    background-color: #7a1a1a;
+    color: var(--color-text-main);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.btn-peligro:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.btn-secundario {
+    display: inline-block;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--color-text-main);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-main);
+    text-decoration: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.btn-secundario:hover {
+    background-color: var(--color-text-main);
+    color: var(--color-bg-header);
+}
+
+.asiento-form {
+    margin: 0;
+}
+
+.asiento-form button {
+    width: 100%;
+    padding: 0.7rem 0.2rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-main);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.asiento-form .asiento-activo {
+    background-color: #168b45;
+}
+
+.asiento-form .asiento-mant {
+    background-color: #555555;
+}
+
+.badge {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: var(--color-text-main);
+    border-radius: 999px;
+    padding: 0 0.45rem;
+    font-size: 0.75rem;
+    margin-left: 0.3rem;
+}
+
+/* ==========================================================================
+   NOTIFICACIONES
+   ========================================================================== */
+.notif {
+    background-color: var(--color-bg-card);
+    border-left: 4px solid #555555;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.notif-pendiente {
+    border-left-color: var(--color-primary);
+}
+
+.notif-resuelta {
+    opacity: 0.5;
+}
+
+.notif h3 {
+    margin-bottom: 0.4rem;
+}
+
+.notif-fecha {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.notif-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    align-items: center;
+}
+
+.notif-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.notif-form select {
+    padding: 0.5rem;
+    background-color: var(--color-bg-input);
+    color: var(--color-text-main);
+    border: var(--border-dark);
+    border-radius: var(--radius-sm);
+}
+
+.notif-form .btn-primario {
+    margin-top: 0;
+    padding: 0.5rem 1rem;
+}
+
+.thumb {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.pagina-perfil {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.acciones-tabla {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.acciones-tabla form {
+    margin: 0;
+}
+
+.btn-peligro:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.estado-pill {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background-color: var(--color-bg-input);
+    white-space: nowrap;
+}
