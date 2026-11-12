@@ -11,7 +11,9 @@ function activo(string $archivo, string $actual): string
 }
 
 $logueado = isset($_SESSION['id_usuario']);
+$es_admin = $logueado && isset($_SESSION['id_rol']) && (int) $_SESSION['id_rol'] === 1;
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -23,26 +25,71 @@ $logueado = isset($_SESSION['id_usuario']);
 <body>
 
 <header class="main-header">
+
     <div class="logo">
-        <h1><a href="index.php">Cine Colombia</a></h1>
+        <h1>
+            <a href="index.php">
+                CINE<span>COLOMBIA</span>
+            </a>
+        </h1>
+        <small>Vive la magia del cine</small>
     </div>
 
     <nav>
         <ul class="nav-links">
-    <li><a href="index.php" class="<?= activo('index.php', $pagina_actual) ?>">Cartelera</a></li>
-    <?php if ($logueado): ?>
-        <li><a href="mis-boletos.php" class="<?= activo('mis-boletos.php', $pagina_actual) ?>">Mis boletos</a></li>
-    <?php endif; ?>
-</ul>
+
+            <li>
+                <a href="index.php"
+                   class="<?= activo('index.php', $pagina_actual) ?>">
+                    Cartelera
+                </a>
+            </li>
+
+            <?php if ($logueado): ?>
+                <li>
+                    <a href="mis-boletos.php"
+                       class="<?= activo('mis-boletos.php', $pagina_actual) ?>">
+                        Mis boletos
+                    </a>
+                </li>
+            <?php endif; ?>
+
+            <?php if ($es_admin): ?>
+                <li>
+                    <a href="admin_usuarios.php"
+                       class="nav-admin <?= activo('admin_usuarios.php', $pagina_actual) ?>">
+                        ⚙ Administrar usuarios
+                    </a>
+                </li>
+            <?php endif; ?>
+
+        </ul>
     </nav>
 
     <div class="acciones">
+
         <?php if ($logueado): ?>
-            <span>Hola, <?= htmlspecialchars($_SESSION['nombre']) ?></span>
-            <a href="logout.php" class="btn-nav">Cerrar sesión</a>
+
+            <span class="saludo">
+                Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'Usuario') ?>
+            </span>
+
+            <a href="logout.php" class="btn-nav">
+                Cerrar sesión
+            </a>
+
         <?php else: ?>
-            <a href="login.php" class="btn-nav">Iniciar sesión</a>
-            <a href="registro.php" class="btn-nav btn-nav--primary">Registrarse</a>
+
+            <a href="login.php" class="btn-nav">
+                Iniciar sesión
+            </a>
+
+            <a href="registro.php" class="btn-nav btn-nav--primary">
+                Registrarse
+            </a>
+
         <?php endif; ?>
+
     </div>
+
 </header>
