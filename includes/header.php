@@ -1,6 +1,12 @@
 <?php
 require_once __DIR__ . '/seguridad.php';
 
+// Cabeceras de seguridad: deben enviarse antes de cualquier salida HTML
+header("X-Frame-Options: DENY");
+header("X-Content-Type-Options: nosniff");
+header("Referrer-Policy: strict-origin-when-cross-origin");
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; frame-ancestors 'none'");
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -19,7 +25,7 @@ $es_admin = $logueado && (int) ($_SESSION['id_rol'] ?? 0) === ROL_ADMIN;
 $pendientes = 0;
 if ($logueado && !$es_admin && isset($conexion)) {
 
-    
+
     try {
         $contador = $conexion->prepare(
             "SELECT COUNT(*) FROM notificaciones WHERE id_usuario = :u AND estado = 'pendiente'"
@@ -33,90 +39,92 @@ if ($logueado && !$es_admin && isset($conexion)) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($titulo ?? 'Cine Colombia') ?></title>
     <link rel="stylesheet" href="includes/style.css">
 </head>
+
 <body>
 
-<header class="main-header">
+    <header class="main-header">
 
-    <div class="logo">
-        <h1>
-            <a href="index.php">
-                CINE<span>COLOMBIA</span>
-            </a>
-        </h1>
-        <small>Vive la magia del cine</small>
-    </div>
-
-    <nav>
-        <ul class="nav-links">
-
-            <li>
-                <a href="index.php" class="<?= activo('index.php', $pagina_actual) ?>">
-                    Cartelera
+        <div class="logo">
+            <h1>
+                <a href="index.php">
+                    ABSOLUTE<span>CINEMA</span>
                 </a>
-            </li>
+            </h1>
+            <small>Vive la magia del cine</small>
+        </div>
 
-            <?php if ($logueado && !$es_admin): ?>
+        <nav>
+            <ul class="nav-links">
+
                 <li>
-                    <a href="mis-boletos.php" class="<?= activo('mis-boletos.php', $pagina_actual) ?>">
-                        Mis boletos
+                    <a href="index.php" class="<?= activo('index.php', $pagina_actual) ?>">
+                        Cartelera
                     </a>
                 </li>
-                <li>
-                    <a href="mis-notificaciones.php" class="<?= activo('mis-notificaciones.php', $pagina_actual) ?>">
-                        Notificaciones
-                        <?php if ($pendientes > 0): ?>
-                            <span class="badge"><?= $pendientes ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
+
+                <?php if ($logueado && !$es_admin): ?>
+                    <li>
+                        <a href="mis-boletos.php" class="<?= activo('mis-boletos.php', $pagina_actual) ?>">
+                            Mis boletos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mis-notificaciones.php" class="<?= activo('mis-notificaciones.php', $pagina_actual) ?>">
+                            Notificaciones
+                            <?php if ($pendientes > 0): ?>
+                                <span class="badge"><?= $pendientes ?></span>
+                            <?php endif; ?>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($es_admin): ?>
+                    <li>
+                        <a href="admin_usuarios.php" class="nav-admin <?= activo('admin_usuarios.php', $pagina_actual) ?>">
+                            ⚙ Administrar
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php if (!$es_admin): ?>
+                    <li>
+                        <a href="mi-perfil.php" class="<?= activo('mi-perfil.php', $pagina_actual) ?>">Mi perfil</a>
+                    </li>
+                <?php endif; ?>
+
+            </ul>
+        </nav>
+
+        <div class="acciones">
+
+            <?php if ($logueado): ?>
+
+                <span class="saludo">
+                    Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'Usuario') ?>
+                </span>
+
+                <a href="logout.php" class="btn-nav">
+                    Cerrar sesión
+                </a>
+
+            <?php else: ?>
+
+                <a href="login.php" class="btn-nav">
+                    Iniciar sesión
+                </a>
+
+                <a href="registro.php" class="btn-nav btn-nav--primary">
+                    Registrarse
+                </a>
+
             <?php endif; ?>
 
-            <?php if ($es_admin): ?>
-                <li>
-                    <a href="admin_usuarios.php" class="nav-admin <?= activo('admin_usuarios.php', $pagina_actual) ?>">
-                        ⚙ Administrar
-                    </a>
-                </li>
-            <?php endif; ?>
-            <?php if (!$es_admin): ?>
-                <li>
-    <a href="mi-perfil.php" class="<?= activo('mi-perfil.php', $pagina_actual) ?>">Mi perfil</a>
-</li>
-            <?php endif; ?>
+        </div>
 
-        </ul>
-    </nav>
-
-    <div class="acciones">
-
-        <?php if ($logueado): ?>
-
-            <span class="saludo">
-                Hola, <?= htmlspecialchars($_SESSION['nombre'] ?? 'Usuario') ?>
-            </span>
-
-            <a href="logout.php" class="btn-nav">
-                Cerrar sesión
-            </a>
-
-        <?php else: ?>
-
-            <a href="login.php" class="btn-nav">
-                Iniciar sesión
-            </a>
-
-            <a href="registro.php" class="btn-nav btn-nav--primary">
-                Registrarse
-            </a>
-
-        <?php endif; ?>
-
-    </div>
-
-</header>
+    </header>

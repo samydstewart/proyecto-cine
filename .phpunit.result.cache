@@ -1,0 +1,1 @@
+{"version":2,"defects":[],"times":{"ValidacionesTest::test_texto_limpio_quita_espacios_extra":0.002,"ValidacionesTest::test_genero_valido":0,"ValidacionesTest::test_genero_con_numeros_se_rechaza":0,"ValidacionesTest::test_genero_vacio_se_rechaza":0,"ValidacionesTest::test_pelicula_con_anio_invalido":0,"ValidacionesTest::test_pelicula_valida":0}}
