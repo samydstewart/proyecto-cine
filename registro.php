@@ -10,8 +10,10 @@ $mensaje = "";
 function validar_registro(array $d): ?string
 {
     // Campos obligatorios
-    if ($d["nombre"] === "" || $d["apellido"] === "" || $d["telefono"] === ""
-        || $d["correo"] === "" || $d["contrasena"] === "") {
+    if (
+        $d["nombre"] === "" || $d["apellido"] === "" || $d["telefono"] === ""
+        || $d["correo"] === "" || $d["contrasena"] === ""
+    ) {
         return "Completa todos los campos obligatorios.";
     }
 
@@ -99,20 +101,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             header("Location: login.php?registro=ok");
             exit();
-
         } catch (PDOException $error) {
             if ($error->getCode() === "23505") {
-                // La restricción única indica qué campo se repitió
                 $mensaje = str_contains($error->getMessage(), "correo_u")
                     ? "Ese correo ya está registrado."
                     : "Ese número de teléfono ya está registrado.";
             } else {
-                error_log($error->getMessage());
-                $mensaje = "Ocurrió un error al registrar el usuario. Intenta más tarde.";
+                error_log("Error al registrar usuario: " . $error->getMessage());
+                // TEMPORAL: mostrar el error real
+                $mensaje = "ERROR REAL: " . $error->getMessage();
             }
         } catch (RuntimeException $error) {
             error_log($error->getMessage());
             $mensaje = "No se pudo crear la cuenta. Contacta al administrador.";
+        } catch (Throwable $error) {
+            error_log("Error al registrar usuario: " . $error->getMessage());
+            $mensaje = "ERROR REAL: " . $error->getMessage() . " en línea " . $error->getLine();
         }
     }
 }
@@ -142,7 +146,7 @@ require 'includes/header.php';
             </div>
 
             <div class="filter-group">
-                <label for="segundo_nombre">Segundo nombre</label>
+                <label for="segundo_nombre">Segundo nombre <small>(opcional)</small></label>
                 <input type="text" id="segundo_nombre" name="segundo_nombre" maxlength="20"
                     pattern="[A-Za-zÁÉÍÓÚáéíóúÑñÜü]+" title="Solo letras, máximo 20"
                     value="<?= htmlspecialchars($_POST["segundo_nombre"] ?? "") ?>"
