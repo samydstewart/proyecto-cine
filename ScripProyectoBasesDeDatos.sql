@@ -313,3 +313,9 @@ CREATE TRIGGER trg_validar_sala_asiento
 BEFORE INSERT OR UPDATE ON boletos
 FOR EACH ROW
 EXECUTE FUNCTION validar_asiento_pertenece_sala();
+-- Eliminar triggers que usan la columna inexistente 'estado'
+DROP TRIGGER IF EXISTS trg_ocupar_asiento ON boletos;
+DROP FUNCTION IF EXISTS actualizar_estado_asiento();
+
+DROP TRIGGER IF EXISTS trg_liberar_asiento ON boletos;
+DROP FUNCTION IF EXISTS liberar_asiento_cancelado();
