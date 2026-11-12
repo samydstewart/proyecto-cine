@@ -1,6 +1,6 @@
 <?php
 
-require_once "includes/verificar_admin.php";
+require_once "verificar_admin.php";
 
 // Consultar todos los usuarios y sus respectivos roles
 $sql = "SELECT
