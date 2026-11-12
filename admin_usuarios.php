@@ -1,4 +1,3 @@
-
 <?php
 
 require_once "includes/verificar_admin.php";
@@ -123,4 +122,3 @@ require "includes/header.php";
 </main>
 
 <?php require "includes/footer.php"; ?>
-```
