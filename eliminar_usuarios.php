@@ -1,4 +1,3 @@
-```php
 <?php
 
 require_once "/verificar_admin.php";
@@ -81,4 +80,4 @@ try {
 }
 
 ?>
-```
+
